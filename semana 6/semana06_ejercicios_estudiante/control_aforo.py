@@ -107,17 +107,68 @@ ocupacion = 0
 grupos_aceptados = []
 grupos_rechazados = []
 
-print("---Sistema de Control de Aforo---")
+entrada = input("Ingrese el tamaño del grupo o escriba 'fin': ")
 
-entrada = input("Ingrese el tamaño del grupo (o escriba 'fin' para terminar): ").strip().lower()
+while entrada.lower() != "fin":
 
-while entrada != "fin":
-    grupo = int(entrada)
-    if grupo + ocupacion > capacidad:
-        print("Rechazado")
-        rechazados.append(grupo)
-    else:
-     print("aceptado")
+    try:
+        grupo = int(entrada)
+
+        if grupo <= 0:
+            print("Entrada inválida. Debe ingresar un entero mayor que cero.")
+
+        else:
+            if ocupacion + grupo <= capacidad:
+                grupos_aceptados.append(grupo)
+                ocupacion += grupo
+
+                print(f"\nGrupo aceptado: ingresan {grupo} personas.")
+                print(f"Ocupación actual: {ocupacion}")
+                print(f"Espacios disponibles: {capacidad - ocupacion}")
+
+            else:
+                grupos_rechazados.append(grupo)
+
+                print(f"\nGrupo rechazado: no hay espacio para {grupo} personas.")
+                print(f"Ocupación actual: {ocupacion}")
+                print(f"Espacios disponibles: {capacidad - ocupacion}")
+
+    except ValueError:
+        print("Entrada inválida. Debe ingresar un número entero o 'fin'.")
+
+    entrada = input("\nIngrese el tamaño del grupo o escriba 'fin': ")
+
+# Calcular total admitido usando un for
+total_admitido = 0
+
+for grupo in grupos_aceptados:
+    total_admitido += grupo
+
+# Reporte final
+print("\nREPORTE FINAL")
+print(f"Grupos aceptados: {len(grupos_aceptados)}")
+print(f"Grupos rechazados: {len(grupos_rechazados)}")
+print(f"Personas admitidas: {total_admitido}")
+print(f"Capacidad máxima: {capacidad}")
+print(f"Espacios disponibles: {capacidad - total_admitido}")
+
+# Extensiones
+if capacidad > 0:
+    porcentaje = (total_admitido / capacidad) * 100
+    print(f"Porcentaje de ocupación: {porcentaje:.2f}%")
+
+if len(grupos_aceptados) > 0:
+    print(f"Grupo aceptado más pequeño: {min(grupos_aceptados)}")
+    print(f"Grupo aceptado más grande: {max(grupos_aceptados)}")
+
+if total_admitido == capacidad:
+    print("Estado final: capacidad completa.")
+elif total_admitido >= capacidad * 0.8:
+    print("Estado final: alta ocupación.")
+elif total_admitido > 0:
+    print("Estado final: ocupación normal.")
+else:
+    print("Estado final: sin asistentes.")
      aceptados.append(grupo)
      ocupacion(grupo)
 
